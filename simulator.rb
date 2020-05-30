@@ -1,3 +1,4 @@
+require 'ruby-progressbar'
 require_relative 'processor.rb'
 
 SIM_TIMES = 1_000_000
@@ -123,10 +124,13 @@ end
 
 def sim_n_times(iters, &block)
   sum = 0
+  bar = ProgressBar.create(title: "Simulating", total: iters)
   iters.times do
+    bar.increment
     sum += block.call()
   end
   sum.to_f / iters
 end
 
-puts sim_n_times(SIM_TIMES) { sim_season }
+result = sim_n_times(SIM_TIMES) { sim_season }
+puts "Average simulated OBP: #{result}"
